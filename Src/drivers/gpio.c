@@ -1,0 +1,43 @@
+#include "drivers/gpio.h"
+
+void GPIO_Init(GPIO_TypeDef* port,
+			   uint8_t pin,
+			   GPIO_Mode_t mode,
+			   GPIO_OTYPE_t output_type,
+			   GPIO_Speed_t output_speed,
+			   GPIO_Pull_t pull_up_down)
+{
+
+	// Clear pins respective registers
+	port->MODER &= ~(0x3U << (pin * 2U));
+	port->OTYPER &= ~(0x1U << pin);
+	port->OSPEEDR &= ~(0x3U << (pin * 2U));
+	port->PUPDR &= ~(0x3U << (pin * 2U));
+
+	// Set pins respective registers
+	port->MODER |= (uint32_t)(mode << (pin * 2U));
+	port->OTYPER |= (uint32_t)(output_type << pin);
+	port->OSPEEDR |= (uint32_t)(output_speed << (pin * 2U));
+	port->PUPDR |= (uint32_t)(pull_up_down << (pin * 2U));
+
+}
+
+void GPIO_Write(GPIO_TypeDef* port,
+				uint8_t pin,
+				GPIO_SetReset_t set_reset)
+{
+	if (set_reset == RESET)
+	{
+		port->BSRR = (uint32_t)(1U << (pin * 2U));
+	}
+	else
+	{
+		port->BSRR = (uint32_t)(1U << pin);
+	}
+}
+
+bool GPIO_Read_Pin(GPIO_TypeDef* port, uint8_t pin)
+{
+	bool state = (port->IDR & (1U << pin));
+	return state;
+}
