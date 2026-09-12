@@ -41,6 +41,7 @@
 #define AF14				14U
 #define AF15				15U
 
+
 typedef enum{
 	INPUT		= 0U,
 	OUTPUT,
@@ -60,7 +61,6 @@ typedef enum{
 	VERY_HIGH,
 }GPIO_Speed_t;
 
-
 typedef enum{
 	PULL_NONE	= 0U,
 	PULL_UP,
@@ -71,6 +71,7 @@ typedef enum{
 	RESET		= 0U,
 	SET,
 }GPIO_SetReset_t;
+
 
 void GPIO_Init(GPIO_TypeDef* port,
 			   uint8_t pin,
@@ -83,6 +84,9 @@ void GPIO_Write(GPIO_TypeDef* port,
 				uint8_t pin,
 				GPIO_SetReset_t set_reset);
 
+void GPIO_Toggle(GPIO_TypeDef* port, uint8_t pin);
+
 bool GPIO_Read_Pin(GPIO_TypeDef* port, uint8_t pin);
+
 
 #endif /* DRIVERS_GPIO_H_ */

@@ -36,8 +36,14 @@ void GPIO_Write(GPIO_TypeDef* port,
 	}
 }
 
+void GPIO_Toggle(GPIO_TypeDef* port, uint8_t pin)
+{
+	port->ODR ^= (1U << pin);
+}
+
 bool GPIO_Read_Pin(GPIO_TypeDef* port, uint8_t pin)
 {
 	bool state = (port->IDR & (1U << pin));
 	return state;
 }
+
