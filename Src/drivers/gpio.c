@@ -28,7 +28,7 @@ void GPIO_Write(GPIO_TypeDef* port,
 {
 	if (set_reset == RESET)
 	{
-		port->BSRR = (uint32_t)(1U << (pin * 2U));
+		port->BSRR = (uint32_t)(1U << (pin + 16U));
 	}
 	else
 	{
@@ -38,7 +38,15 @@ void GPIO_Write(GPIO_TypeDef* port,
 
 void GPIO_Toggle(GPIO_TypeDef* port, uint8_t pin)
 {
-	port->ODR ^= (1U << pin);
+	if (port->ODR & (1U << pin))
+	{
+		port->BSRR = (uint32_t)(1U << (pin + 16U));
+	}
+	else
+	{
+		port->BSRR = (uint32_t)(1U << pin);
+	}
+
 }
 
 bool GPIO_Read_Pin(GPIO_TypeDef* port, uint8_t pin)
